@@ -1,0 +1,34 @@
+services:
+  call-processor:
+    build:
+      context: .
+      dockerfile: Dockerfile.processor
+    restart: unless-stopped
+    volumes:
+      # Audio files — point your Google Drive sync here on the host
+      - ./watch_folder:/app/watch_folder
+
+      # FreshBooks encrypted token + config
+      - ./secrets:/app/secrets:ro
+      - ./.env:/app/.env:ro
+
+      # Reminders database — persists across container restarts
+      - ./reminders.db:/app/reminders.db
+
+      # Claude Code auth from host — lets claude -p work without an API key
+      # Set CLAUDE_CONFIG_DIR and CLAUDE_JSON_FILE in docker.env
+      - ${CLAUDE_CONFIG_DIR}:/root/.claude:ro
+      - ${CLAUDE_JSON_FILE}:/root/.claude.json:ro
+
+      # Whisper model cache — avoids re-downloading (~150MB) on every rebuild
+      - whisper-cache:/root/.cache/huggingface
+
+    environment:
+      # Override the Windows/Mac token path in .env with the container path
+      - FRESHBOOKS_TOKEN_PATH=/app/secrets/tokens.enc
+
+    env_file:
+      - docker.env
+
+volumes:
+  whisper-cache:

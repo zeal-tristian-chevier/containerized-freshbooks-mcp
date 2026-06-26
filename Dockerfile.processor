@@ -1,0 +1,29 @@
+FROM python:3.11-slim
+
+# ffmpeg for audio decoding, Node.js for Claude Code CLI
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    ffmpeg \
+    curl \
+    && curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
+    && apt-get install -y --no-install-recommends nodejs \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install Claude Code CLI (uses host auth mounted at runtime — no API key needed)
+RUN npm install -g @anthropic-ai/claude-code
+
+WORKDIR /app
+
+# Python deps first so this layer is cached across code changes
+COPY requirements-processor.txt ./
+RUN pip install --no-cache-dir -r requirements-processor.txt
+
+# App source
+COPY freshbooks_mcp/ ./freshbooks_mcp/
+COPY call_processor/ ./call_processor/
+
+RUN mkdir -p watch_folder/processed
+
+ENV PYTHONUNBUFFERED=1
+ENV PYTHONPATH=/app
+
+CMD ["python", "-m", "call_processor.main"]
