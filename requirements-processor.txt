@@ -3,3 +3,4 @@ watchdog
 apscheduler
 sqlalchemy
 python-dotenv
+icalendar

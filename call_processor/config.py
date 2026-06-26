@@ -10,6 +10,7 @@ PROCESSED_FOLDER = WATCH_FOLDER / "processed"
 DB_PATH = BASE_DIR / "reminders.db"
 
 WHISPER_MODEL = os.getenv("WHISPER_MODEL", "base")
+TZ = os.getenv("TZ", "America/Toronto")
 
 NOTIFY_EMAIL = os.getenv("NOTIFY_EMAIL", "")
 EMPLOYEE_EMAIL = os.getenv("EMPLOYEE_EMAIL", "")
