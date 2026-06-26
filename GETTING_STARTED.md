@@ -37,8 +37,8 @@ and copy its credentials.
 ## Step 2 — Get the code
 
 ```bash
-git clone https://github.com/SantiaGoMode/freshbooks-timesheet-mcp.git
-cd freshbooks-timesheet-mcp
+git clone https://github.com/zeal-tristian-chevier/containerized-freshbooks-mcp.git
+cd containerized-freshbooks-mcp
 cp .env.example .env          # non-secret settings; safe to leave as defaults
 ```
 
