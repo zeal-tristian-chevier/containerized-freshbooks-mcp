@@ -14,6 +14,12 @@ secret.key
 reminders.db
 watch_folder/
 
+# --- Knowledge base working folders (keep structure, not contents) ---
+_inbox/*
+!_inbox/.gitkeep
+_proposed/*
+!_proposed/.gitkeep
+
 # --- Python ---
 __pycache__/
 *.py[cod]
@@ -42,7 +48,8 @@ htmlcov/
 .tox/
 
 # --- Tooling / editor ---
-.claude/
+.claude/*
+!.claude/skills
 .idea/
 .vscode/
 
